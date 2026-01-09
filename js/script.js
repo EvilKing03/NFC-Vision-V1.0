@@ -33,26 +33,36 @@ document.addEventListener('DOMContentLoaded', function() {
             } 
             // Si c'est la page détail produit
             else {
-                productName = productCard.querySelector('h1').textContent;
-                productPrice = productCard.querySelector('.product-detail-price').textContent;
+                 productName = productCard.querySelector('h1').textContent;
+                 productPrice = productCard.querySelector('.product-detail-price').textContent;
                 productImage = document.querySelector('.product-detail-image img').src;
             }
-            
-            // Créer l'objet produit
-            const product = {
-                name: productName,
-                price: productPrice,
-                image: productImage,
-                quantity: 1
-            };
+
+            // Récupérer la quantité sélectionnée (page produit uniquement)
+            let selectedQuantity = 1;
+            if (productCard.classList.contains('product-detail-info')) {
+                const quantityInput = productCard.querySelector('input[type="number"]');
+                if (quantityInput) {
+                    selectedQuantity = parseInt(quantityInput.value) || 1;
+             }
+}
+
+// Créer l'objet produit
+const product = {
+    name: productName,
+    price: productPrice,
+    image: productImage,
+    quantity: selectedQuantity
+};
             
             // Vérifier si le produit existe déjà dans le panier
             const existingProduct = cart.find(item => item.name === product.name);
             
             if (existingProduct) {
-                // Augmenter la quantité
-                existingProduct.quantity++;
-            } else {
+                // Augmenter la quantité par le nombre sélectionné
+                existingProduct.quantity += selectedQuantity;
+            }
+            else {
                 // Ajouter le nouveau produit
                 cart.push(product);
             }
