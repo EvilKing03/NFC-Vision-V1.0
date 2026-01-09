@@ -430,27 +430,138 @@ if (document.querySelector('.checkout-page')) {
         const expiry = document.getElementById('expiry').value.trim();
         const cvv = document.getElementById('cvv').value.trim();
         
-        // Vérifier que tous les champs sont remplis
-        if (!firstName || !lastName || !email || !phone || !address || 
-            !zipCode || !city || !cardNumber || !expiry || !cvv) {
-            alert('⚠️ Veuillez remplir tous les champs obligatoires');
+        // === VALIDATION PRÉNOM ET NOM ===
+        if (!firstName || firstName.length < 2) {
+            showError('Le prénom doit contenir au moins 2 caractères');
+            document.getElementById('firstName').focus();
             return;
         }
         
-        // Vérifier le format de l'email
+        if (!lastName || lastName.length < 2) {
+            showError('Le nom doit contenir au moins 2 caractères');
+            document.getElementById('lastName').focus();
+            return;
+        }
+        
+        // Vérifier qu'il n'y a que des lettres
+        const nameRegex = /^[a-zA-ZÀ-ÿ\s-]+$/;
+        if (!nameRegex.test(firstName)) {
+            showError('Le prénom ne peut contenir que des lettres');
+            document.getElementById('firstName').focus();
+            return;
+        }
+        
+        if (!nameRegex.test(lastName)) {
+            showError('Le nom ne peut contenir que des lettres');
+            document.getElementById('lastName').focus();
+            return;
+        }
+        
+        // === VALIDATION EMAIL ===
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        if (!emailRegex.test(email)) {
-            alert('⚠️ Veuillez entrer une adresse email valide');
+        if (!email || !emailRegex.test(email)) {
+            showError('Veuillez entrer une adresse email valide (ex: nom@exemple.com)');
+            document.getElementById('email').focus();
             return;
         }
         
-        // Vérifier que le panier n'est pas vide
+        // === VALIDATION TÉLÉPHONE ===
+        // Enlever tous les espaces et caractères spéciaux
+        const cleanPhone = phone.replace(/[\s\-\.\(\)]/g, '');
+        const phoneRegex = /^(\+33|0)[1-9](\d{8})$/;
+        
+        if (!phoneRegex.test(cleanPhone)) {
+            showError('Veuillez entrer un numéro de téléphone français valide (ex: 06 12 34 56 78)');
+            document.getElementById('phone').focus();
+            return;
+        }
+        
+        // === VALIDATION ADRESSE ===
+        if (!address || address.length < 5) {
+            showError('L\'adresse doit contenir au moins 5 caractères');
+            document.getElementById('address').focus();
+            return;
+        }
+        
+        // === VALIDATION CODE POSTAL ===
+        const zipRegex = /^\d{4}$/;
+        if (!zipRegex.test(zipCode)) {
+            showError('Le code postal doit contenir exactement 4 chiffres (ex: 7500)');
+            document.getElementById('zipCode').focus();
+            return;
+        }
+        
+        // === VALIDATION VILLE ===
+        if (!city || city.length < 2) {
+            showError('Le nom de la ville doit contenir au moins 2 caractères');
+            document.getElementById('city').focus();
+            return;
+        }
+        
+        if (!nameRegex.test(city)) {
+            showError('Le nom de la ville ne peut contenir que des lettres');
+            document.getElementById('city').focus();
+            return;
+        }
+        
+        // === VALIDATION CARTE BANCAIRE ===
+        // Enlever les espaces
+        const cleanCard = cardNumber.replace(/\s/g, '');
+        
+        // Vérifier qu'il n'y a que des chiffres
+        if (!/^\d+$/.test(cleanCard)) {
+            showError('Le numéro de carte ne doit contenir que des chiffres');
+            document.getElementById('cardNumber').focus();
+            return;
+        }
+        
+        // Vérifier la longueur (16 chiffres pour la plupart des cartes)
+        if (cleanCard.length !== 16) {
+            showError('Le numéro de carte doit contenir 16 chiffres');
+            document.getElementById('cardNumber').focus();
+            return;
+        }
+        
+        // Algorithme de Luhn pour valider le numéro de carte
+        if (!isValidCardNumber(cleanCard)) {
+            showError('Le numéro de carte bancaire est invalide');
+            document.getElementById('cardNumber').focus();
+            return;
+        }
+        
+        // === VALIDATION DATE D'EXPIRATION ===
+        const expiryRegex = /^(0[1-9]|1[0-2])\/([0-9]{2})$/;
+        if (!expiryRegex.test(expiry)) {
+            showError('La date d\'expiration doit être au format MM/AA (ex: 12/25)');
+            document.getElementById('expiry').focus();
+            return;
+        }
+        
+        // Vérifier que la carte n'est pas expirée
+        const [month, year] = expiry.split('/');
+        const expiryDate = new Date(2000 + parseInt(year), parseInt(month) - 1);
+        const today = new Date();
+        
+        if (expiryDate < today) {
+            showError('Cette carte bancaire est expirée');
+            document.getElementById('expiry').focus();
+            return;
+        }
+        
+        // === VALIDATION CVV ===
+        if (!/^\d{3}$/.test(cvv)) {
+            showError('Le CVV doit contenir exactement 3 chiffres');
+            document.getElementById('cvv').focus();
+            return;
+        }
+        
+        // === VALIDATION PANIER ===
         if (cart.length === 0) {
-            alert('⚠️ Votre panier est vide');
+            showError('Votre panier est vide. Ajoutez des produits avant de commander.');
             return;
         }
         
-        // Créer l'objet commande
+        // === TOUT EST VALIDE - CRÉER LA COMMANDE ===
         const order = {
             id: 'CMD-' + Date.now(),
             date: new Date().toLocaleDateString('fr-FR'),
@@ -480,6 +591,51 @@ if (document.querySelector('.checkout-page')) {
         
         // Rediriger vers la page de confirmation
         window.location.href = 'confirmation.html';
+    }
+    
+    // Fonction pour valider le numéro de carte (Algorithme de Luhn)
+    function isValidCardNumber(cardNumber) {
+        let sum = 0;
+        let isEven = false;
+        
+        // Parcourir de droite à gauche
+        for (let i = cardNumber.length - 1; i >= 0; i--) {
+            let digit = parseInt(cardNumber[i]);
+            
+            if (isEven) {
+                digit *= 2;
+                if (digit > 9) {
+                    digit -= 9;
+                }
+            }
+            
+            sum += digit;
+            isEven = !isEven;
+        }
+        
+        return (sum % 10) === 0;
+    }
+    
+    // Fonction pour afficher une erreur
+    function showError(message) {
+        // Créer l'élément d'erreur
+        const errorDiv = document.createElement('div');
+        errorDiv.className = 'error-notification';
+        errorDiv.textContent = '❌ ' + message;
+        document.body.appendChild(errorDiv);
+        
+        // Afficher l'erreur
+        setTimeout(function() {
+            errorDiv.classList.add('show');
+        }, 10);
+        
+        // Cacher et supprimer après 5 secondes
+        setTimeout(function() {
+            errorDiv.classList.remove('show');
+            setTimeout(function() {
+                errorDiv.remove();
+            }, 300);
+        }, 5000);
     }
 }
 

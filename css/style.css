@@ -1307,3 +1307,22 @@ footer {
     transform: translateX(5px);
 }
 
+/* Notification d'erreur */
+.error-notification {
+    position: fixed;
+    top: 100px;
+    right: -400px;
+    background-color: #e74c3c;
+    color: white;
+    padding: 15px 25px;
+    border-radius: 5px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    z-index: 1000;
+    transition: right 0.3s ease;
+    font-weight: bold;
+    max-width: 350px;
+}
+
+.error-notification.show {
+    right: 20px;
+}
