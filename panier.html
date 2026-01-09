@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mon Panier - Ma Boutique</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <!-- NAVIGATION -->
+    <nav>
+        <a href="index.html" class="logo">MA BOUTIQUE</a>
+        
+        <ul class="nav-links">
+            <li><a href="index.html">Accueil</a></li>
+            <li><a href="#">Produits</a></li>
+            <li><a href="#">Contact</a></li>
+        </ul>
+        
+        <div class="nav-icons">
+            <a href="panier.html">🛒 Panier (2)</a>
+        </div>
+    </nav>
+
+    <!-- PAGE PANIER -->
+    <section class="cart-page">
+        <h1>Mon Panier</h1>
+        
+        <div class="cart-container">
+            <!-- Liste des articles -->
+            <div class="cart-items">
+                <!-- Article 1 -->
+                <div class="cart-item">
+                    <img src="images/TagNFC_Bleu.jpg" alt="Produit 1">
+                    <div class="cart-item-details">
+                        <h3>TagNFC Bleu</h3>
+                        <p class="cart-item-price">5.50 €</p>
+                    </div>
+                    <div class="cart-item-quantity">
+                        <button class="qty-btn">-</button>
+                        <span>1</span>
+                        <button class="qty-btn">+</button>
+                    </div>
+                    <p class="cart-item-total">5.50 €</p>
+                    <button class="btn-remove">🗑️</button>
+                </div>
+                
+                <!-- Article 2 -->
+                <div class="cart-item">
+                    <img src="images/TagNFC_Noir.jpg" alt="Produit 2">
+                    <div class="cart-item-details">
+                        <h3>TagNFC Noir</h3>
+                        <p class="cart-item-price">5.50 €</p>
+                    </div>
+                    <div class="cart-item-quantity">
+                        <button class="qty-btn">-</button>
+                        <span>1</span>
+                        <button class="qty-btn">+</button>
+                    </div>
+                    <p class="cart-item-total">5.50 €</p>
+                    <button class="btn-remove">🗑️</button>
+                </div>
+            </div>
+            
+            <!-- Résumé de la commande -->
+            <div class="cart-summary">
+                <h2>Résumé</h2>
+                <div class="summary-line">
+                    <span>Sous-total</span>
+                    <span>0 €</span>
+                </div>
+                <div class="summary-line">
+                    <span>Livraison</span>
+                    <span>Gratuite</span>
+                </div>
+                <div class="summary-line total">
+                    <span>Total</span>
+                    <span>0 €</span>
+                </div>
+                <a href="commande.html" class="btn-checkout" style="text-decoration: none; display: block; text-align: center;">Passer la commande</a>
+                <a href="index.html" class="btn-continue">← Continuer mes achats</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- PIED DE PAGE -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>NFC Vision</h3>
+                <p>Votre destination pour des produits de qualité</p>
+            </div>
+            
+            <div class="footer-section">
+                <h4>Liens rapides</h4>
+                <ul>
+                    <li><a href="#">À propos</a></li>
+                    <li><a href="#">Contact</a></li>
+                    <li><a href="#">Conditions</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-section">
+                <h4>Suivez-nous</h4>
+                <div class="social-links">
+                    <a href="https://www.instagram.com/nfc_vision/" target="_blank" rel="noopener">
+                        📱 Instagram
+                    </a>
+                    <a herf="https://www.tiktok.com/@nfc_vision" target="_blank" rel="noonpener">
+                        📘 Tik-Tok
+                    </a>
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            <p>&copy; 2026 NFC Vision. Tous droits réservés.</p>
+        </div>
+    </footer>
+
+<script src="js/script.js"></script>
+
+</body>
+</html>

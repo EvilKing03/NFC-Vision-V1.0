@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Finaliser ma commande - Ma Boutique</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <!-- NAVIGATION -->
+    <nav>
+        <a href="index.html" class="logo">MA BOUTIQUE</a>
+        
+        <ul class="nav-links">
+            <li><a href="index.html">Accueil</a></li>
+            <li><a href="#">Produits</a></li>
+            <li><a href="#">Contact</a></li>
+        </ul>
+        
+        <div class="nav-icons">
+            <a href="panier.html">🛒 Panier (0)</a>
+        </div>
+    </nav>
+
+    <!-- PAGE COMMANDE -->
+    <section class="checkout-page">
+        <h1>Finaliser ma commande</h1>
+        
+        <!-- Étapes de commande -->
+        <div class="checkout-steps">
+            <div class="step active">
+                <span class="step-number">1</span>
+                <span class="step-label">Livraison</span>
+            </div>
+            <div class="step-line"></div>
+            <div class="step">
+                <span class="step-number">2</span>
+                <span class="step-label">Paiement</span>
+            </div>
+            <div class="step-line"></div>
+            <div class="step">
+                <span class="step-number">3</span>
+                <span class="step-label">Confirmation</span>
+            </div>
+        </div>
+        
+        <div class="checkout-container">
+            <!-- Formulaire -->
+            <div class="checkout-form">
+                <!-- Informations personnelles -->
+                <div class="form-section">
+                    <h2>📋 Informations personnelles</h2>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Prénom *</label>
+                            <input type="text" id="firstName" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Nom *</label>
+                            <input type="text" id="lastName" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Email *</label>
+                        <input type="email" id="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Téléphone *</label>
+                        <input type="tel" id="phone" required>
+                    </div>
+                </div>
+                
+                <!-- Adresse de livraison -->
+                <div class="form-section">
+                    <h2>🚚 Adresse de livraison</h2>
+                    <div class="form-group">
+                        <label>Adresse *</label>
+                        <input type="text" id="address" required>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Code postal *</label>
+                            <input type="text" id="zipCode" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Ville *</label>
+                            <input type="text" id="city" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Pays *</label>
+                        <select id="country">
+                            <option value="FR">France</option>
+                            <option value="BE">Belgique</option>
+                            <option value="CH">Suisse</option>
+                            <option value="LU">Luxembourg</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <!-- Mode de livraison -->
+                <div class="form-section">
+                    <h2>📦 Mode de livraison</h2>
+                    <div class="shipping-options">
+                        <label class="shipping-option">
+                            <input type="radio" name="shipping" value="standard" checked>
+                            <div class="option-content">
+                                <span class="option-title">Livraison Standard</span>
+                                <span class="option-description">3-5 jours ouvrés</span>
+                            </div>
+                            <span class="option-price">Gratuite</span>
+                        </label>
+                        
+                        <label class="shipping-option">
+                            <input type="radio" name="shipping" value="express">
+                            <div class="option-content">
+                                <span class="option-title">Livraison Express</span>
+                                <span class="option-description">1-2 jours ouvrés</span>
+                            </div>
+                            <span class="option-price">9,99 €</span>
+                        </label>
+                    </div>
+                </div>
+                
+                <!-- Paiement -->
+                <div class="form-section">
+                    <h2>💳 Informations de paiement</h2>
+                    <div class="form-group">
+                        <label>Numéro de carte *</label>
+                        <input type="text" id="cardNumber" placeholder="1234 5678 9012 3456" maxlength="19">
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Date d'expiration *</label>
+                            <input type="text" id="expiry" placeholder="MM/AA" maxlength="5">
+                        </div>
+                        <div class="form-group">
+                            <label>CVV *</label>
+                            <input type="text" id="cvv" placeholder="123" maxlength="3">
+                        </div>
+                    </div>
+                </div>
+                
+                <button class="btn-place-order" id="placeOrderBtn">Valider ma commande</button>
+            </div>
+            
+            <!-- Résumé de commande -->
+            <div class="order-summary">
+                <h2>Récapitulatif</h2>
+                <div id="orderItems">
+                    <!-- Les produits s'afficheront ici -->
+                </div>
+                <div class="summary-totals">
+                    <div class="summary-line">
+                        <span>Sous-total</span>
+                        <span id="subtotal">0,00 €</span>
+                    </div>
+                    <div class="summary-line">
+                        <span>Livraison</span>
+                        <span id="shippingCost">Gratuite</span>
+                    </div>
+                    <div class="summary-line total">
+                        <span>Total</span>
+                        <span id="totalCost">0,00 €</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- PIED DE PAGE -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>NFC Vision</h3>
+                <p>Votre destination pour des produits de qualité</p>
+            </div>
+            
+            <div class="footer-section">
+                <h4>Liens rapides</h4>
+                <ul>
+                    <li><a href="#">À propos</a></li>
+                    <li><a href="#">Contact</a></li>
+                    <li><a href="#">Conditions</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-section">
+                <h4>Suivez-nous</h4>
+                <div class="social-links">
+                    <a href="https://www.instagram.com/nfc_vision/" target="_blank" rel="noopener">
+                        📱 Instagram
+                    </a>
+                    <a herf="https://www.tiktok.com/@nfc_vision" target="_blank" rel="noonpener">
+                        📘 Tik-Tok
+                    </a>
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            <p>&copy; 2026 NFC Vision. Tous droits réservés.</p>
+        </div>
+    </footer>
+    
+    <script src="js/script.js"></script>
+</body>
+</html>

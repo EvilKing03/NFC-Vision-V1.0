@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Commande confirmée - Ma Boutique</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <!-- NAVIGATION -->
+    <nav>
+        <a href="index.html" class="logo">MA BOUTIQUE</a>
+        
+        <ul class="nav-links">
+            <li><a href="index.html">Accueil</a></li>
+            <li><a href="#">Produits</a></li>
+            <li><a href="#">Contact</a></li>
+        </ul>
+        
+        <div class="nav-icons">
+            <a href="panier.html">🛒 Panier (0)</a>
+        </div>
+    </nav>
+
+    <!-- PAGE CONFIRMATION -->
+    <section class="confirmation-page">
+        <div class="confirmation-container">
+            <!-- Icône de succès -->
+            <div class="success-icon">✅</div>
+            
+            <h1>Commande confirmée !</h1>
+            <p class="confirmation-message">
+                Merci pour votre commande ! Nous avons bien reçu votre paiement et 
+                préparons déjà votre colis avec soin.
+            </p>
+            
+            <!-- Détails de la commande -->
+            <div class="order-details-card">
+                <h2>Récapitulatif de votre commande</h2>
+                
+                <div class="detail-row">
+                    <span class="detail-label">Numéro de commande :</span>
+                    <span class="detail-value" id="orderNumber">-</span>
+                </div>
+                
+                <div class="detail-row">
+                    <span class="detail-label">Date :</span>
+                    <span class="detail-value" id="orderDate">-</span>
+                </div>
+                
+                <div class="detail-row">
+                    <span class="detail-label">Email :</span>
+                    <span class="detail-value" id="customerEmail">-</span>
+                </div>
+                
+                <div class="detail-row">
+                    <span class="detail-label">Adresse de livraison :</span>
+                    <span class="detail-value" id="shippingAddress">-</span>
+                </div>
+                
+                <div class="detail-row total-row">
+                    <span class="detail-label">Total payé :</span>
+                    <span class="detail-value" id="orderTotal">-</span>
+                </div>
+            </div>
+            
+            <!-- Produits commandés -->
+            <div class="ordered-items-card">
+                <h3>Produits commandés</h3>
+                <div id="orderedItems">
+                    <!-- Les produits s'afficheront ici -->
+                </div>
+            </div>
+            
+            <!-- Informations supplémentaires -->
+            <div class="info-box">
+                <p>📧 Un email de confirmation a été envoyé à votre adresse.</p>
+                <p>📦 Vous recevrez un email avec le numéro de suivi dès l'expédition.</p>
+            </div>
+            
+            <!-- Boutons d'action -->
+            <div class="confirmation-actions">
+                <a href="index.html" class="btn-primary">Retour à l'accueil</a>
+                <button class="btn-secondary" onclick="window.print()">Imprimer la facture</button>
+            </div>
+        </div>
+    </section>
+
+<!-- PIED DE PAGE -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>NFC Vision</h3>
+                <p>Votre destination pour des produits de qualité</p>
+            </div>
+            
+            <div class="footer-section">
+                <h4>Liens rapides</h4>
+                <ul>
+                    <li><a href="#">À propos</a></li>
+                    <li><a href="#">Contact</a></li>
+                    <li><a href="#">Conditions</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-section">
+                <h4>Suivez-nous</h4>
+                <div class="social-links">
+                    <a href="https://www.instagram.com/nfc_vision/" target="_blank" rel="noopener">
+                        📱 Instagram
+                    </a>
+                    <a herf="https://www.tiktok.com/@nfc_vision" target="_blank" rel="noonpener">
+                        📘 Tik-Tok
+                    </a>
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            <p>&copy; 2026 NFC Vision. Tous droits réservés.</p>
+        </div>
+    </footer>
+
+    <script src="js/script.js"></script>
+</body>
+</html>

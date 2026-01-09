@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Détails Produit - Ma Boutique</title>
+    
+    <!-- On réutilise le même fichier CSS -->
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <!-- NAVIGATION (la même que sur l'accueil) -->
+    <nav>
+        <a href="index.html" class="logo">MA BOUTIQUE</a>
+        
+        <ul class="nav-links">
+            <li><a href="index.html">Accueil</a></li>
+            <li><a href="#">Produits</a></li>
+            <li><a href="#">Contact</a></li>
+        </ul>
+        
+        <div class="nav-icons">
+            <a href="panier.html">🛒 Panier (0)</a>
+        </div>
+    </nav>
+
+    <!-- DÉTAILS DU PRODUIT -->
+    <section class="product-detail">
+        <div class="product-detail-container">
+            <!-- Image du produit -->
+            <div class="product-detail-image">
+                <img src="images/TagNFC_Bleu.jpg" alt="Produit">
+            </div>
+            
+            <!-- Informations du produit -->
+            <div class="product-detail-info">
+                <h1>TagNFC Bleu</h1>
+                <p class="product-detail-price">5.50 €</p>
+                
+                <p class="product-detail-description">
+                    Découvrez notre produit élégant et minimaliste, conçu avec soin pour 
+                    répondre à vos besoins. Fabriqué avec des matériaux de qualité premium, 
+                    ce produit allie style et fonctionnalité.
+                </p>
+                
+                <!-- Sélecteur de quantité -->
+                <div class="quantity-selector">
+                    <label>Quantité :</label>
+                    <input type="number" value="1" min="1" max="999">
+                </div>
+                
+                <!-- Bouton ajouter au panier -->
+                <button class="btn-add-cart-large">Ajouter au panier</button>
+                
+                <a href="index.html" class="btn-back">← Retour aux produits</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- PIED DE PAGE -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>NFC Vision</h3>
+                <p>Votre destination pour des produits de qualité</p>
+            </div>
+            
+            <div class="footer-section">
+                <h4>Liens rapides</h4>
+                <ul>
+                    <li><a href="#">À propos</a></li>
+                    <li><a href="#">Contact</a></li>
+                    <li><a href="#">Conditions</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-section">
+                <h4>Suivez-nous</h4>
+                <div class="social-links">
+                    <a href="https://www.instagram.com/nfc_vision/" target="_blank" rel="noopener">
+                        📱 Instagram
+                    </a>
+                    <a herf="https://www.tiktok.com/@nfc_vision" target="_blank" rel="noonpener">
+                        📘 Tik-Tok
+                    </a>
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            <p>&copy; 2026 NFC Vision. Tous droits réservés.</p>
+        </div>
+    </footer>
+
+<script src="js/script.js"></script>
+
+</body>
+</html>
