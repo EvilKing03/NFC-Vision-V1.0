@@ -21,18 +21,19 @@
 
   <!-- NAVIGATION -->
     <nav>
-        <a href="#" class="logo">NFC Vision</a>
-        
-        <ul class="nav-links">
-            <li><a href="#">Accueil</a></li>
-            <li><a href="#">Produits</a></li>
-            <li><a href="#">Contact</a></li>
-        </ul>
-        
-       <div class="nav-icons">
-    <a href="panier.html">🛒 Panier (0)</a>
-        </div>
-    </nav>
+    <a href="index.html" class="logo">NFC Vision</a>
+    
+    <ul class="nav-links">
+        <li><a href="index.html">Accueil</a></li>
+        <li><a href="#">Produits</a></li>
+        <li><a href="#">Contact</a></li>
+    </ul>
+    
+    <div class="nav-icons">
+        <a href="connexion.html" title="Compte"> 👤Connexion </a>
+        <a href="panier.html"> 🛒 Panier (0) </a>
+    </div>
+</nav>
 
 <!-- SECTION HERO (grande bannière) -->
     <section class="hero">
@@ -68,11 +69,16 @@
         </div>
     </section>
 
-    <!-- SECTION PRODUITS -->
-    <section class="products">
-        <h2>Nos Produits</h2>
-        
-        <div class="products-grid">
+   <!-- SECTION PRODUITS -->
+<section class="products">
+    <h2>Nos Produits</h2>
+    
+    <!-- Barre de recherche -->
+    <div class="search-container-products">
+        <input type="text" id="searchInput" placeholder="🔍 Rechercher un produit...">
+    </div>
+    
+    <div class="products-grid">
             <!-- Produit 1 -->
             <div class="product-card">
                 <a href="TagNFC_Bleu.html">

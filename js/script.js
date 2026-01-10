@@ -81,7 +81,7 @@ const product = {
     // Fonction pour mettre à jour le compteur du panier
     function updateCartDisplay() {
         const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
-        const cartIcon = document.querySelector('.nav-icons a');
+        const cartIcon = document.querySelector('.nav-icons a[href="panier.html"]');
         if (cartIcon) {
             cartIcon.innerHTML = '🛒 Panier (' + totalItems + ')';
         }
@@ -337,6 +337,20 @@ if (document.querySelector('.checkout-page')) {
     
     // Récupérer le panier
     let cart = JSON.parse(localStorage.getItem('cart')) || [];
+
+    // === AUTO-REMPLISSAGE SI CONNECTÉ ===
+    const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    
+    if (currentUser) {
+        // Pré-remplir le formulaire avec les infos de l'utilisateur
+        document.getElementById('firstName').value = currentUser.firstName;
+        document.getElementById('lastName').value = currentUser.lastName;
+        document.getElementById('email').value = currentUser.email;
+        document.getElementById('phone').value = currentUser.phone;
+        document.getElementById('address').value = currentUser.address;
+        document.getElementById('zipCode').value = currentUser.zipCode;
+        document.getElementById('city').value = currentUser.city;
+    }
     
     // Afficher les produits dans le résumé
     displayOrderSummary();
@@ -582,8 +596,28 @@ if (document.querySelector('.checkout-page')) {
             total: document.getElementById('totalCost').textContent
         };
         
-        // Sauvegarder la commande
+       // Sauvegarder la commande
         localStorage.setItem('lastOrder', JSON.stringify(order));
+        
+        // Ajouter la commande à l'historique de l'utilisateur si connecté
+        const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+        if (currentUser) {
+            if (!currentUser.orders) {
+                currentUser.orders = [];
+            }
+            currentUser.orders.push(order);
+            
+            // Mettre à jour l'utilisateur connecté
+            localStorage.setItem('currentUser', JSON.stringify(currentUser));
+            
+            // Mettre à jour dans la liste des utilisateurs
+            const users = JSON.parse(localStorage.getItem('users')) || [];
+            const userIndex = users.findIndex(u => u.id === currentUser.id);
+            if (userIndex !== -1) {
+                users[userIndex] = currentUser;
+                localStorage.setItem('users', JSON.stringify(users));
+            }
+        }
         
         // Vider le panier
         localStorage.removeItem('cart');
@@ -694,3 +728,359 @@ if (document.querySelector('.confirmation-page')) {
     }
 }
 
+// ========================================
+// SYSTÈME D'AUTHENTIFICATION
+// ========================================
+
+// === PAGE INSCRIPTION ===
+if (document.getElementById('signupForm')) {
+    const signupForm = document.getElementById('signupForm');
+    
+    signupForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        // Récupérer les valeurs
+        const firstName = document.getElementById('signupFirstName').value.trim();
+        const lastName = document.getElementById('signupLastName').value.trim();
+        const email = document.getElementById('signupEmail').value.trim().toLowerCase();
+        const phone = document.getElementById('signupPhone').value.trim();
+        const address = document.getElementById('signupAddress').value.trim();
+        const zipCode = document.getElementById('signupZipCode').value.trim();
+        const city = document.getElementById('signupCity').value.trim();
+        const password = document.getElementById('signupPassword').value;
+        const passwordConfirm = document.getElementById('signupPasswordConfirm').value;
+        const acceptTerms = document.getElementById('acceptTerms').checked;
+        
+        // Validations
+        if (password.length < 8) {
+            showError('Le mot de passe doit contenir au moins 8 caractères');
+            return;
+        }
+        
+        if (password !== passwordConfirm) {
+            showError('Les mots de passe ne correspondent pas');
+            return;
+        }
+        
+        if (!acceptTerms) {
+            showError('Vous devez accepter les conditions d\'utilisation');
+            return;
+        }
+        
+        // Vérifier si l'email existe déjà
+        const users = JSON.parse(localStorage.getItem('users')) || [];
+        const existingUser = users.find(user => user.email === email);
+        
+        if (existingUser) {
+            showError('Cet email est déjà utilisé');
+            return;
+        }
+        
+        // Créer le nouvel utilisateur
+        const newUser = {
+            id: 'USER-' + Date.now(),
+            firstName: firstName,
+            lastName: lastName,
+            email: email,
+            phone: phone,
+            address: address,
+            zipCode: zipCode,
+            city: city,
+            password: password, // ⚠️ En production, il faut hasher le mot de passe !
+            createdAt: new Date().toISOString(),
+            orders: []
+        };
+        
+        // Ajouter l'utilisateur
+        users.push(newUser);
+        localStorage.setItem('users', JSON.stringify(users));
+        
+        // Connecter automatiquement l'utilisateur
+        localStorage.setItem('currentUser', JSON.stringify(newUser));
+        
+        // Notification et redirection
+        showNotification('✅ Compte créé avec succès ! Bienvenue chez NFC Vision !');
+        
+        setTimeout(function() {
+            window.location.href = 'index.html';
+        }, 2000);
+    });
+}
+
+// === PAGE CONNEXION ===
+if (document.getElementById('loginForm')) {
+    const loginForm = document.getElementById('loginForm');
+    
+    loginForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        const email = document.getElementById('loginEmail').value.trim().toLowerCase();
+        const password = document.getElementById('loginPassword').value;
+        const rememberMe = document.getElementById('rememberMe').checked;
+        
+        // Récupérer les utilisateurs
+        const users = JSON.parse(localStorage.getItem('users')) || [];
+        
+        // Chercher l'utilisateur
+        const user = users.find(u => u.email === email && u.password === password);
+        
+        if (!user) {
+            showError('Email ou mot de passe incorrect');
+            return;
+        }
+        
+        // Connexion réussie
+        localStorage.setItem('currentUser', JSON.stringify(user));
+        
+        if (rememberMe) {
+            localStorage.setItem('rememberMe', 'true');
+        }
+        
+        showNotification('✅ Connexion réussie ! Bienvenue ' + user.firstName + ' !');
+        
+        setTimeout(function() {
+            window.location.href = 'index.html';
+        }, 1500);
+    });
+}
+
+// === VÉRIFIER SI UN UTILISATEUR EST CONNECTÉ ===
+function checkUserLogin() {
+    const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    const userIcon = document.querySelector('.nav-icons a[title="Compte"]');
+    
+    if (currentUser && userIcon) {
+        // Remplacer l'icône par le nom de l'utilisateur
+        userIcon.innerHTML = '👤 ' + currentUser.firstName;
+        userIcon.href = 'compte.html';
+    }
+}
+
+// Vérifier au chargement de chaque page
+checkUserLogin();
+
+// === FONCTION POUR SE DÉCONNECTER ===
+function logout() {
+    localStorage.removeItem('currentUser');
+    localStorage.removeItem('rememberMe');
+    showNotification('✅ Déconnexion réussie');
+    setTimeout(function() {
+        window.location.href = 'index.html';
+    }, 1000);
+}
+
+// ========================================
+// PAGE COMPTE UTILISATEUR
+// ========================================
+
+if (document.querySelector('.account-page')) {
+    const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    
+    const notLoggedInDiv = document.getElementById('notLoggedIn');
+    const loggedInDiv = document.getElementById('loggedIn');
+    
+    // Vérifier si l'utilisateur est connecté
+    if (!currentUser) {
+        // Afficher le message "non connecté"
+        notLoggedInDiv.style.display = 'block';
+        loggedInDiv.style.display = 'none';
+    } else {
+        // Afficher la page compte
+        notLoggedInDiv.style.display = 'none';
+        loggedInDiv.style.display = 'block';
+        
+        // Afficher les informations
+        displayUserInfo();
+        
+        // Afficher l'historique des commandes
+        displayOrderHistory();
+        
+        // Gérer le bouton "Modifier"
+        const editInfoBtn = document.getElementById('editInfoBtn');
+        const infoDisplay = document.getElementById('infoDisplay');
+        const editInfoForm = document.getElementById('editInfoForm');
+        const cancelEditBtn = document.getElementById('cancelEditBtn');
+        
+        editInfoBtn.addEventListener('click', function() {
+            // Cacher l'affichage et montrer le formulaire
+            infoDisplay.style.display = 'none';
+            editInfoForm.style.display = 'block';
+            
+            // Pré-remplir le formulaire avec les données actuelles
+            document.getElementById('editFirstName').value = currentUser.firstName;
+            document.getElementById('editLastName').value = currentUser.lastName;
+            document.getElementById('editEmail').value = currentUser.email;
+            document.getElementById('editPhone').value = currentUser.phone;
+            document.getElementById('editAddress').value = currentUser.address;
+            document.getElementById('editZipCode').value = currentUser.zipCode;
+            document.getElementById('editCity').value = currentUser.city;
+        });
+        
+        // Gérer l'annulation
+        cancelEditBtn.addEventListener('click', function() {
+            infoDisplay.style.display = 'block';
+            editInfoForm.style.display = 'none';
+        });
+        
+        // Gérer la soumission du formulaire
+        editInfoForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Récupérer les nouvelles valeurs
+            currentUser.firstName = document.getElementById('editFirstName').value.trim();
+            currentUser.lastName = document.getElementById('editLastName').value.trim();
+            currentUser.email = document.getElementById('editEmail').value.trim();
+            currentUser.phone = document.getElementById('editPhone').value.trim();
+            currentUser.address = document.getElementById('editAddress').value.trim();
+            currentUser.zipCode = document.getElementById('editZipCode').value.trim();
+            currentUser.city = document.getElementById('editCity').value.trim();
+            
+            // Mettre à jour dans la liste des utilisateurs
+            const users = JSON.parse(localStorage.getItem('users')) || [];
+            const userIndex = users.findIndex(u => u.id === currentUser.id);
+            
+            if (userIndex !== -1) {
+                users[userIndex] = currentUser;
+                localStorage.setItem('users', JSON.stringify(users));
+            }
+            
+            // Mettre à jour l'utilisateur connecté
+            localStorage.setItem('currentUser', JSON.stringify(currentUser));
+            
+            // Réafficher les informations
+            displayUserInfo();
+            
+            // Cacher le formulaire et afficher l'affichage
+            infoDisplay.style.display = 'block';
+            editInfoForm.style.display = 'none';
+            
+            showNotification('✅ Informations mises à jour avec succès !');
+        });
+        
+        // Gérer la déconnexion
+        const logoutBtn = document.getElementById('logoutBtn');
+        logoutBtn.addEventListener('click', function() {
+            logout();
+        });
+    }
+    
+    // Fonction pour afficher les informations de l'utilisateur
+    function displayUserInfo() {
+        document.getElementById('displayName').textContent = currentUser.firstName + ' ' + currentUser.lastName;
+        document.getElementById('displayEmail').textContent = currentUser.email;
+        document.getElementById('displayPhone').textContent = currentUser.phone;
+        document.getElementById('displayAddress').textContent = currentUser.address + ', ' + currentUser.zipCode + ' ' + currentUser.city;
+    }
+    
+    // Fonction pour afficher l'historique des commandes
+    function displayOrderHistory() {
+        const ordersContainer = document.getElementById('ordersHistory');
+        
+        if (!currentUser.orders || currentUser.orders.length === 0) {
+            ordersContainer.innerHTML = '<p class="empty-message">Vous n\'avez pas encore passé de commande</p>';
+            return;
+        }
+        
+        ordersContainer.innerHTML = '';
+        
+        currentUser.orders.forEach(function(order) {
+            const orderHTML = `
+                <div class="order-item">
+                    <div class="order-header">
+                        <span class="order-id">${order.id}</span>
+                        <span class="order-date">${order.date}</span>
+                    </div>
+                    <p>${order.items.length} article(s)</p>
+                    <p class="order-total">Total : ${order.total}</p>
+                </div>
+            `;
+            ordersContainer.innerHTML += orderHTML;
+        });
+    }
+}
+
+// ========================================
+// RECHERCHE DE PRODUITS
+// ========================================
+
+// Si on est sur la page d'accueil
+if (document.getElementById('searchInput')) {
+    const searchInput = document.getElementById('searchInput');
+    const productsGrid = document.querySelector('.products-grid');
+    const productsSection = document.querySelector('.products');
+    
+    // Stocker tous les produits au départ
+    let allProducts = [];
+    
+    // Fonction pour sauvegarder tous les produits
+    function saveAllProducts() {
+        const productCards = document.querySelectorAll('.product-card');
+        allProducts = Array.from(productCards).map(card => {
+            return {
+                element: card.cloneNode(true),
+                name: card.querySelector('h3').textContent.toLowerCase(),
+                price: card.querySelector('.product-price').textContent,
+                description: card.querySelector('.product-description').textContent.toLowerCase()
+            };
+        });
+    }
+    
+    // Sauvegarder les produits au chargement
+    saveAllProducts();
+    
+    // Écouter la saisie dans la recherche
+    searchInput.addEventListener('input', function() {
+        const searchTerm = searchInput.value.toLowerCase().trim();
+        
+        // Si la recherche est vide, afficher tous les produits
+        if (searchTerm === '') {
+            displayAllProducts();
+            return;
+        }
+        
+        // Filtrer les produits
+        const filteredProducts = allProducts.filter(product => {
+            return product.name.includes(searchTerm) || 
+                   product.description.includes(searchTerm);
+        });
+        
+        // Afficher les résultats
+        displayFilteredProducts(filteredProducts);
+    });
+    
+    // Fonction pour afficher tous les produits
+    function displayAllProducts() {
+        productsGrid.innerHTML = '';
+        allProducts.forEach(product => {
+            const productClone = product.element.cloneNode(true);
+            productsGrid.appendChild(productClone);
+        });
+        // Réappliquer les animations
+        animateOnScroll();
+    }
+    
+    // Fonction pour afficher les produits filtrés
+    function displayFilteredProducts(products) {
+        productsGrid.innerHTML = '';
+        
+        if (products.length === 0) {
+            // Aucun résultat
+            productsGrid.innerHTML = `
+                <div class="no-results">
+                    <div class="no-results-icon">🔍</div>
+                    <p>Aucun produit trouvé pour "${searchInput.value}"</p>
+                    <p style="font-size: 14px; margin-top: 10px;">Essayez avec d'autres mots-clés</p>
+                </div>
+            `;
+            productsGrid.style.gridColumn = '1 / -1';
+        } else {
+            productsGrid.style.gridColumn = '';
+            products.forEach(product => {
+                const productClone = product.element.cloneNode(true);
+                productsGrid.appendChild(productClone);
+            });
+            // Réappliquer les animations
+            animateOnScroll();
+        }
+    }
+}

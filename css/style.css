@@ -1326,3 +1326,453 @@ footer {
 .error-notification.show {
     right: 20px;
 }
+
+/* ========================================
+   PAGES AUTHENTIFICATION (Connexion/Inscription)
+   ======================================== */
+
+.auth-page {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 80px 20px 40px 20px;
+    background: linear-gradient(135deg, rgb(221, 221, 221) 0%, rgb(221, 221, 221) 100%);
+}
+
+.auth-container {
+    width: 100%;
+    max-width: 500px;
+}
+
+.auth-card {
+    background-color: var(--card-bg);
+    border-radius: 15px;
+    padding: 40px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    animation: slideUp 0.5s ease;
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.auth-card h1 {
+    font-size: 32px;
+    color: var(--text-primary);
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+.auth-subtitle {
+    text-align: center;
+    color: var(--text-secondary);
+    margin-bottom: 30px;
+    font-size: 16px;
+}
+
+.auth-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* Checkbox personnalisée */
+.form-checkbox {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.form-checkbox input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+}
+
+.form-checkbox label {
+    font-size: 14px;
+    color: var(--text-secondary);
+    cursor: pointer;
+    margin: 0;
+}
+
+.form-group small {
+    display: block;
+    margin-top: 5px;
+    font-size: 12px;
+    color: var(--text-secondary);
+}
+
+/* Bouton d'authentification */
+.btn-auth {
+    width: 100%;
+    padding: 15px;
+    background: linear-gradient(135deg, #667eea 0%, #667eea 100%);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: transform 0.3s, box-shadow 0.3s;
+    margin-top: 10px;
+}
+
+.btn-auth:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
+}
+
+/* Lien de changement de page */
+.auth-switch {
+    text-align: center;
+    margin-top: 25px;
+    color: var(--text-secondary);
+    font-size: 14px;
+}
+
+.auth-switch a {
+    color: #3656e6;
+    text-decoration: none;
+    font-weight: bold;
+    transition: color 0.3s;
+}
+
+.auth-switch a:hover {
+    color: #5568d3;
+    text-decoration: underline;
+}
+
+/* Mode sombre pour les pages d'auth */
+body.dark-mode .auth-card {
+    background-color: var(--card-bg);
+}
+
+body.dark-mode .form-group input {
+    background-color: var(--bg-secondary);
+    color: var(--text-primary);
+    border-color: var(--border-color);
+}
+
+/* Responsive */
+@media screen and (max-width: 768px) {
+    .auth-card {
+        padding: 30px 20px;
+    }
+    
+    .auth-card h1 {
+        font-size: 26px;
+    }
+}
+
+/* ========================================
+   PAGE COMPTE UTILISATEUR
+   ======================================== */
+
+.account-page {
+    padding: 80px 50px;
+    background-color: #f8f9fa;
+    min-height: 100vh;
+}
+
+.account-container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.account-page h1 {
+    font-size: 36px;
+    color: #2c3e50;
+    margin-bottom: 40px;
+    text-align: center;
+}
+
+/* Message si pas connecté */
+.message-box {
+    background-color: white;
+    padding: 40px;
+    border-radius: 10px;
+    text-align: center;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+}
+
+.message-box p {
+    font-size: 18px;
+    color: #666;
+    margin-bottom: 25px;
+}
+
+/* Grille des cartes */
+.account-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
+    margin-bottom: 30px;
+}
+
+.account-card {
+    background-color: white;
+    border-radius: 10px;
+    padding: 30px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+}
+
+.card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+    padding-bottom: 15px;
+    border-bottom: 2px solid #f0f0f0;
+}
+
+.account-card h2 {
+    font-size: 22px;
+    color: #2c3e50;
+    margin: 0;
+}
+
+/* Bouton modifier */
+.btn-edit {
+    padding: 8px 20px;
+    background-color: #667eea;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.btn-edit:hover {
+    background-color: #5568d3;
+}
+
+/* Affichage des informations */
+.info-display {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.info-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 12px 0;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.info-row:last-child {
+    border-bottom: none;
+}
+
+.info-label {
+    font-weight: bold;
+    color: #555;
+}
+
+.info-row span:last-child {
+    color: #2c3e50;
+}
+
+/* Formulaire d'édition */
+.edit-form {
+    animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.form-actions {
+    display: flex;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.form-actions .btn-primary,
+.form-actions .btn-secondary {
+    flex: 1;
+    padding: 12px;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.form-actions .btn-primary {
+    background-color: #667eea;
+    color: white;
+}
+
+.form-actions .btn-primary:hover {
+    background-color: #5568d3;
+}
+
+.form-actions .btn-secondary {
+    background-color: #ecf0f1;
+    color: #2c3e50;
+}
+
+.form-actions .btn-secondary:hover {
+    background-color: #d5dbdb;
+}
+
+/* Historique des commandes */
+.empty-message {
+    text-align: center;
+    color: #999;
+    padding: 30px;
+    font-style: italic;
+}
+
+.order-item {
+    padding: 20px;
+    border: 2px solid #f0f0f0;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    transition: border-color 0.3s;
+}
+
+.order-item:hover {
+    border-color: #667eea;
+}
+
+.order-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+
+.order-id {
+    font-weight: bold;
+    color: #667eea;
+}
+
+.order-date {
+    color: #999;
+    font-size: 14px;
+}
+
+.order-total {
+    font-size: 18px;
+    font-weight: bold;
+    color: #2c3e50;
+    margin-top: 10px;
+}
+
+/* Section déconnexion */
+.logout-section {
+    text-align: center;
+    margin-top: 30px;
+}
+
+.btn-logout {
+    padding: 12px 40px;
+    background-color: #e74c3c;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+.btn-logout:hover {
+    background-color: #c0392b;
+    transform: translateY(-2px);
+}
+
+/* Responsive */
+@media screen and (max-width: 768px) {
+    .account-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .card-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+    }
+    
+    .btn-edit {
+        width: 100%;
+    }
+    
+    .info-row {
+        flex-direction: column;
+        gap: 5px;
+    }
+    
+    .form-actions {
+        flex-direction: column;
+    }
+}
+
+/* Barre de recherche dans la section produits */
+.search-container-products {
+    max-width: 600px;
+    margin: 0 auto 40px auto;
+}
+
+.search-container-products input {
+    width: 100%;
+    padding: 15px 20px;
+    border: 2px solid #e0e0e0;
+    border-radius: 50px;
+    font-size: 16px;
+    transition: all 0.3s;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+}
+
+.search-container-products input:focus {
+    outline: none;
+    border-color: #667eea;
+    box-shadow: 0 5px 20px rgba(102, 126, 234, 0.2);
+    transform: translateY(-2px);
+}
+
+/* Message "Aucun résultat" */
+.no-results {
+    text-align: center;
+    padding: 60px 20px;
+    color: #999;
+    font-size: 18px;
+    grid-column: 1 / -1;
+}
+
+.no-results-icon {
+    font-size: 60px;
+    margin-bottom: 20px;
+}
+
+/* Responsive */
+@media screen and (max-width: 768px) {
+    .search-container-products {
+        margin: 0 20px 30px 20px;
+    }
+    
+    .search-container-products input {
+        font-size: 14px;
+        padding: 12px 15px;
+    }
+}
